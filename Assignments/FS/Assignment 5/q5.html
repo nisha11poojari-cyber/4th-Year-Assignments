@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Library Book Management</title>
+
+    <script src="jquery-3.7.1.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        #search {
+            width: 60%;
+            padding: 10px;
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .available {
+            color: green;
+            font-weight: bold;
+        }
+
+        .unavailable {
+            color: red;
+            font-weight: bold;
+        }
+
+        #message {
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Library Book Management</h1>
+
+        <!-- Display total number of books -->
+        <h3>Total Books: <span id="totalBooks">0</span></h3>
+
+        <!-- Search box -->
+        <input type="text" id="search"
+               placeholder="Search by title or author">
+
+        <br>
+
+        <!-- Available books filter -->
+        <label>
+            <input type="checkbox" id="availableOnly">
+            Show only available books
+        </label>
+
+        <p id="message">Loading books...</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Book ID</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Category</th>
+                    <th>Price (₹)</th>
+                    <th>Availability</th>
+                </tr>
+            </thead>
+
+            <tbody id="bookTable">
+            </tbody>
+        </table>
+
+        <p>Books displayed: <span id="displayCount">0</span></p>
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            let books = [];
+
+            // 1. Load JSON file using AJAX
+            $.getJSON("books.json", function (data) {
+
+                books = data;
+
+                // 6. Display total number of books
+                $("#totalBooks").text(books.length);
+
+                // Display all books initially
+                displayBooks(books);
+
+                $("#message").text("Books loaded successfully.");
+
+            }).fail(function () {
+
+                $("#message").text(
+                    "Error loading books.json. Please check the file."
+                );
+
+            });
+
+            // Function to display books in the table
+            function displayBooks(bookList) {
+
+                $("#bookTable").empty();
+
+                // 2. Display books in an HTML table
+                $.each(bookList, function (index, book) {
+
+                    let status = book.Availability
+                        ? "Available" : "Not Available";
+
+                    let row = $("<tr>");
+
+                    row.append($("<td>").text(book.BookID));
+                    row.append($("<td>").text(book.Title));
+                    row.append($("<td>").text(book.Author));
+                    row.append($("<td>").text(book.Category));
+                    row.append($("<td>").text("₹" + book.Price));
+
+                    let statusCell = $("<td>")
+                        .text(status)
+                        .addClass(book.Availability
+                            ? "available" : "unavailable");
+
+                    row.append(statusCell);
+
+                    $("#bookTable").append(row);
+                });
+
+                $("#displayCount").text(bookList.length);
+
+                if (bookList.length === 0) {
+                    $("#bookTable").append(
+                        $("<tr>").append(
+                            $("<td>")
+                                .attr("colspan", 6)
+                                .text("No books found.")
+                        )
+                    );
+                }
+            }
+
+            // Function to search and filter books
+            function filterBooks() {
+
+                let searchText = $("#search").val().toLowerCase();
+                let onlyAvailable = $("#availableOnly").prop("checked");
+
+                let filteredBooks = books.filter(function (book) {
+
+                    // 4. Filter by title or author
+                    let matchesSearch =
+                        book.Title.toLowerCase().includes(searchText) ||
+                        book.Author.toLowerCase().includes(searchText);
+
+                    // 5. Display only available books if checked
+                    let matchesAvailability =
+                        !onlyAvailable || book.Availability === true;
+
+                    return matchesSearch && matchesAvailability;
+                });
+
+                displayBooks(filteredBooks);
+            }
+
+            // 3 and 4. Search books while typing
+            $("#search").on("input", function () {
+                filterBooks();
+            });
+
+            // 5. Filter available books
+            $("#availableOnly").on("change", function () {
+                filterBooks();
+            });
+
+        });
+    </script>
+
+</body>
+</html>

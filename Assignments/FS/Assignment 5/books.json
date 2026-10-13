@@ -1,0 +1,82 @@
+[
+    {
+        "BookID": 101,
+        "Title": "Wings of Fire",
+        "Author": "A. P. J. Abdul Kalam",
+        "Category": "Biography",
+        "Price": 250,
+        "Availability": true
+    },
+    {
+        "BookID": 102,
+        "Title": "The Alchemist",
+        "Author": "Paulo Coelho",
+        "Category": "Fiction",
+        "Price": 300,
+        "Availability": true
+    },
+    {
+        "BookID": 103,
+        "Title": "Clean Code",
+        "Author": "Robert C. Martin",
+        "Category": "Programming",
+        "Price": 550,
+        "Availability": false
+    },
+    {
+        "BookID": 104,
+        "Title": "Harry Potter",
+        "Author": "J. K. Rowling",
+        "Category": "Fantasy",
+        "Price": 450,
+        "Availability": true
+    },
+    {
+        "BookID": 105,
+        "Title": "Atomic Habits",
+        "Author": "James Clear",
+        "Category": "Self-help",
+        "Price": 400,
+        "Availability": true
+    },
+    {
+        "BookID": 106,
+        "Title": "The Hobbit",
+        "Author": "J. R. R. Tolkien",
+        "Category": "Fantasy",
+        "Price": 350,
+        "Availability": false
+    },
+    {
+        "BookID": 107,
+        "Title": "Introduction to Algorithms",
+        "Author": "Thomas H. Cormen",
+        "Category": "Programming",
+        "Price": 700,
+        "Availability": true
+    },
+    {
+        "BookID": 108,
+        "Title": "Pride and Prejudice",
+        "Author": "Jane Austen",
+        "Category": "Classic",
+        "Price": 280,
+        "Availability": true
+    },
+    {
+        "BookID": 109,
+        "Title": "The Psychology of Money",
+        "Author": "Morgan Housel",
+        "Category": "Finance",
+        "Price": 320,
+        "Availability": false
+    },
+    {
+        "BookID": 110,
+        "Title": "Think and Grow Rich",
+        "Author": "Napoleon Hill",
+        "Category": "Self-help",
+        "Price": 270,
+        "Availability": true
+    }
+]

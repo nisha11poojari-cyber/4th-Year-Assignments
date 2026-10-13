@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Department Information System</title>
+
+    <script src="jquery-3.7.1.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 30px;
+        }
+
+        .container {
+            width: 500px;
+            margin: auto;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 15px 0;
+        }
+
+        #departmentInfo {
+            background-color: #e8f5e9;
+            padding: 15px;
+            display: none;
+        }
+
+        #message {
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Department Information System</h1>
+
+        <label>Select Department:</label>
+
+        <select id="department">
+            <option value="">-- Select Department --</option>
+            <option value="computer">Computer Science</option>
+            <option value="mathematics">Mathematics</option>
+            <option value="physics">Physics</option>
+            <option value="statistics">Statistics</option>
+        </select>
+
+        <p id="message"></p>
+
+        <div id="departmentInfo">
+            <h2 id="name"></h2>
+            <p><b>Head of Department:</b> <span id="hod"></span></p>
+            <p><b>Courses:</b> <span id="courses"></span></p>
+            <p><b>Faculty Members:</b> <span id="faculty"></span></p>
+            <p><b>Description:</b> <span id="description"></span></p>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            // Execute when the department is selected
+            $("#department").change(function () {
+
+                let department = $(this).val();
+
+                // Hide previous information
+                $("#departmentInfo").hide();
+
+                if (department === "") {
+                    $("#message").text("Please select a department.");
+                    return;
+                }
+
+                $("#message").text("Loading department information...");
+
+                // Retrieve JSON data using AJAX
+                $.getJSON(department + ".json", function (data) {
+
+                    // Display the retrieved information
+                    $("#name").text(data.name);
+                    $("#hod").text(data.hod);
+                    $("#courses").text(data.courses);
+                    $("#faculty").text(data.faculty);
+                    $("#description").text(data.description);
+
+                    $("#message").text("Department information loaded.");
+
+                    // Show information with fade effect
+                    $("#departmentInfo").fadeIn(500);
+
+                }).fail(function () {
+
+                    $("#message").text(
+                        "Unable to load department information."
+                    );
+
+                });
+
+            });
+
+        });
+    </script>
+
+</body>
+</html>

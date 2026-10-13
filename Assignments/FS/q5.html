@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping Cart</title>
+
+    <script src="jquery-3.7.1.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f4f4f4;
+        }
+ 
+        h2 {
+            color: darkblue;
+        }
+
+        .product {
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 10px;
+            display: inline-block;
+            width: 180px;
+            vertical-align: top;
+            border-radius: 8px;
+        }
+
+        button {
+            background-color: darkblue;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: navy;
+        }
+
+        #cart {
+            background-color: white;
+            padding: 20px;
+            margin-top: 25px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        #details {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #e6f2ff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Shopping Cart</h2>
+
+    <div class="product"
+         data-id="101"
+         data-name="Laptop"
+         data-price="50000"
+         data-category="Electronics">
+
+        <h3>Laptop</h3>
+        <p>Price: ₹50,000</p>
+        <p>Category: Electronics</p>
+        <button class="add">Add to Cart</button>
+    </div>
+
+    <div class="product"
+         data-id="102"
+         data-name="Headphones"
+         data-price="2000"
+         data-category="Electronics">
+
+        <h3>Headphones</h3>
+        <p>Price: ₹2,000</p>
+        <p>Category: Electronics</p>
+        <button class="add">Add to Cart</button>
+    </div>
+
+    <div class="product"
+         data-id="103"
+         data-name="Shoes"
+         data-price="3000"
+         data-category="Fashion">
+
+        <h3>Shoes</h3>
+        <p>Price: ₹3,000</p>
+        <p>Category: Fashion</p>
+        <button class="add">Add to Cart</button>
+    </div>
+
+    <div class="product"
+         data-id="104"
+         data-name="Watch"
+         data-price="1500"
+         data-category="Accessories">
+
+        <h3>Watch</h3>
+        <p>Price: ₹1,500</p>
+        <p>Category: Accessories</p>
+        <button class="add">Add to Cart</button>
+    </div>
+
+    <div class="product"
+         data-id="105"
+         data-name="Backpack"
+         data-price="1200"
+         data-category="Fashion">
+
+        <h3>Backpack</h3>
+        <p>Price: ₹1,200</p>
+        <p>Category: Fashion</p>
+        <button class="add">Add to Cart</button>
+    </div>
+
+    <div id="cart">
+        <h2>Your Cart</h2>
+
+        <p>Products Selected: <span id="count">0</span></p>
+
+        <p>Total Price: ₹<span id="total">0</span></p>
+
+        <p>Discount: <span id="discount">10</span>%</p>
+
+        <p>Final Price: ₹<span id="final">0</span></p>
+
+        <button id="showDiscount">Show Stored Discount</button>
+        <button id="reset">Clear Cart</button>
+
+        <div id="details">
+            <h3>Selected Product Details</h3>
+            <p id="info">No product selected.</p>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            var total = 0;
+            var count = 0;
+
+            // Store discount using jQuery data()
+            $("#cart").data("discount", 10);
+
+            // 1 and 2. Retrieve and display product information
+            $(".add").click(function () {
+
+                var product = $(this).parent();
+
+                var id = product.data("id");
+                var name = product.data("name");
+                var price = product.data("price");
+                var category = product.data("category");
+
+                // Display selected product details
+                $("#info").html(
+                    "Product ID: " + id + "<br>" +
+                    "Product Name: " + name + "<br>" +
+                    "Price: ₹" + price + "<br>" +
+                    "Category: " + category
+                );
+
+                // 3. Calculate total price
+                total = total + price;
+
+                // 4. Count selected products
+                count++;
+
+                $("#total").text(total);
+                $("#count").text(count);
+
+                // Calculate final price after discount
+                var discount = $("#cart").data("discount");
+                var finalPrice = total - (total * discount / 100);
+
+                $("#final").text(finalPrice.toFixed(2));
+            });
+
+            // 5. Retrieve stored discount
+            $("#showDiscount").click(function () {
+
+                var discount = $("#cart").data("discount");
+
+                $("#discount").text(discount);
+
+                alert("Stored Discount: " + discount + "%");
+            });
+
+            // Clear cart and reset total
+            $("#reset").click(function () {
+
+                total = 0;
+                count = 0;
+
+                $("#total").text(0);
+                $("#count").text(0);
+                $("#final").text("0.00");
+                $("#info").text("No product selected.");
+            });
+
+        });
+    </script>
+
+</body>
+</html>

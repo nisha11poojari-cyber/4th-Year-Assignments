@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Gallery</title>
+
+    <script src="jquery-3.7.1.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .gallery {
+            width: 650px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        #largeImage {
+            width: 500px;
+            height: 300px;
+            object-fit: cover;
+            border: 2px solid #333;
+        }
+
+        .thumbnails img {
+            width: 100px;
+            height: 70px;
+            object-fit: cover;
+            margin: 10px 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .thumbnails img:hover,
+        .thumbnails img.active {
+            border: 2px solid blue;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #imageTitle {
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="gallery">
+        <h1>Image Gallery</h1>
+
+        <!-- Large Image -->
+        <img id="largeImage"
+             src="https://picsum.photos/id/10/500/300"
+             alt="Forest">
+
+        <h3 id="imageTitle">Forest</h3>
+
+        <!-- Thumbnail Images -->
+        <div class="thumbnails">
+            <img src="https://picsum.photos/id/10/500/300"
+                 data-title="Forest" alt="Forest">
+
+            <img src="https://picsum.photos/id/1015/500/300"
+                 data-title="Mountains" alt="Mountains">
+
+            <img src="https://picsum.photos/id/1011/500/300"
+                 data-title="River" alt="River">
+
+            <img src="https://picsum.photos/id/1018/500/300"
+                 data-title="Nature" alt="Nature">
+
+            <img src="https://picsum.photos/id/1020/500/300"
+                 data-title="Wildlife" alt="Wildlife">
+        </div>
+
+        <!-- Navigation Buttons -->
+        <button id="prev">Previous</button>
+        <button id="next">Next</button>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            let currentIndex = 0;
+            let thumbnails = $(".thumbnails img");
+
+            // Function to display the selected image
+            function showImage(index) {
+                currentIndex = index;
+
+                let imageSrc = thumbnails.eq(index).attr("src");
+                let imageTitle = thumbnails.eq(index).data("title");
+
+                // Fade out, change image, and fade in
+                $("#largeImage").fadeOut(300, function () {
+                    $(this).attr("src", imageSrc);
+                    $(this).attr("alt", imageTitle);
+                    $(this).fadeIn(300);
+                });
+
+                // Display image title dynamically
+                $("#imageTitle").text(imageTitle);
+
+                // Highlight selected thumbnail
+                thumbnails.removeClass("active");
+                thumbnails.eq(index).addClass("active");
+            }
+
+            // Change image when thumbnail is clicked
+            thumbnails.click(function () {
+                let index = $(this).index();
+                showImage(index);
+            });
+
+            // Next button
+            $("#next").click(function () {
+                let nextIndex = (currentIndex + 1) % thumbnails.length;
+                showImage(nextIndex);
+            });
+
+            // Previous button
+            $("#prev").click(function () {
+                let prevIndex =
+                    (currentIndex - 1 + thumbnails.length) % thumbnails.length;
+                showImage(prevIndex);
+            });
+
+            // Set initial selected thumbnail
+            showImage(0);
+
+        });
+    </script>
+
+</body>
+</html>

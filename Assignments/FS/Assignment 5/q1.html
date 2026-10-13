@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Online Feedback Form</title>
+
+    <script src="jquery-3.7.1.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 30px;
+        }
+
+        form {
+            background-color: white;
+            width: 350px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        #message, #ratingMessage {
+            color: blue;
+            font-size: 14px;
+        }
+
+        #success {
+            color: green;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <form id="feedbackForm">
+        <h2>Online Feedback Form</h2>
+
+        <label>Name:</label>
+        <input type="text" id="name" placeholder="Enter your name">
+        <p id="message"></p>
+
+        <label>Email:</label>
+        <input type="email" id="email" placeholder="Enter your email">
+
+        <label>Rating:</label>
+        <select id="rating">
+            <option value="">Select Rating</option>
+            <option value="1">1 - Poor</option>
+            <option value="2">2 - Fair</option>
+            <option value="3">3 - Good</option>
+            <option value="4">4 - Very Good</option>
+            <option value="5">5 - Excellent</option>
+        </select>
+        <p id="ratingMessage"></p>
+
+        <label>Feedback:</label>
+        <textarea id="feedback" rows="4"
+                  placeholder="Enter your feedback"></textarea>
+
+        <button type="submit">Submit</button>
+
+        <p id="success"></p>
+    </form>
+
+    <script>
+        $(document).ready(function () {
+
+            // 1. Display message when user enters the name
+            $("#name").on("input", function () {
+                if ($(this).val() !== "") {
+                    $("#message").text("Hello, " + $(this).val() + "!");
+                } else {
+                    $("#message").text("");
+                }
+            });
+
+            // 2. Change background color when textbox receives focus
+            $("input[type='text'], input[type='email'], textarea")
+                .on("focus", function () {
+                    $(this).css("background-color", "lightyellow");
+                });
+
+            // 3. Restore background color when textbox loses focus
+            $("input[type='text'], input[type='email'], textarea")
+                .on("blur", function () {
+                    $(this).css("background-color", "white");
+                });
+
+            // 4. Display the selected rating
+            $("#rating").on("change", function () {
+                if ($(this).val() !== "") {
+                    $("#ratingMessage").text(
+                        "You selected rating: " + $(this).val()
+                    );
+                } else {
+                    $("#ratingMessage").text("");
+                }
+            });
+
+            // 5 and 6. Validate form and display success message
+            $("#feedbackForm").on("submit", function (event) {
+                event.preventDefault();
+
+                let name = $("#name").val().trim();
+                let email = $("#email").val().trim();
+                let rating = $("#rating").val();
+                let feedback = $("#feedback").val().trim();
+
+                if (name === "" || email === "" ||
+                    rating === "" || feedback === "") {
+
+                    $("#success")
+                        .css("color", "red")
+                        .text("Please fill in all mandatory fields.");
+
+                } else if (!$("#email")[0].checkValidity()) {
+
+                    $("#success")
+                        .css("color", "red")
+                        .text("Please enter a valid email address.");
+
+                } else {
+                    $("#success")
+                        .css("color", "green")
+                        .text("Feedback submitted successfully!");
+
+                    // Clear the form after successful submission
+                    this.reset();
+                    $("#message").text("");
+                    $("#ratingMessage").text("");
+                }
+            });
+
+        });
+    </script>
+
+</body>
+</html>
